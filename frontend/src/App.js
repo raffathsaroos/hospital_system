@@ -64,19 +64,19 @@ function App() {
               <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
                 <div style={{ flex: 1, backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', borderLeft: '5px solid #3498db' }}>
                   <h3 style={{ margin: 0, color: '#7f8c8d', fontSize: '0.9rem' }}>TOTAL PATIENTS</h3>
-                  <p style={{ margin: '5px 0 0', fontSize: '1.8rem', fontWeight: 'bold', color: '#2c3e50' }}>👥 {stats.patients}</p>
+                  <p style={{ margin: '5px 0 0', fontSize: '1.8rem', fontWeight: 'bold', color: '#2c3e50' }}> {stats.patients}</p>
                 </div>
 
                 <div style={{ flex: 1, backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', borderLeft: '5px solid #e67e22' }}>
                   <h3 style={{ margin: 0, color: '#7f8c8d', fontSize: '0.9rem' }}>LOW STOCK MEDICINES</h3>
                   <p style={{ margin: '5px 0 0', fontSize: '1.8rem', fontWeight: 'bold', color: stats.lowStock > 0 ? '#e67e22' : '#27ae60' }}>
-                    💊 {stats.lowStock}
+                     {stats.lowStock}
                   </p>
                 </div>
 				<div style={{ flex: 1, backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', borderLeft: '5px solid #8e44ad' }}>
 				<h3 style={{ margin: 0, color: '#7f8c8d', fontSize: '0.9rem' }}>PENDING LAB TESTS</h3>
 				<p style={{ margin: '5px 0 0', fontSize: '1.8rem', fontWeight: 'bold', color: '#2c3e50' }}>
-					🔬 {stats.pendingTests}
+					 {stats.pendingTests}
 				</p>
 				</div>
               </div>
@@ -84,17 +84,17 @@ function App() {
               {/* TABLES SECTION */}
               <main style={{ marginTop: '30px' }}>
                 <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-                  <h2 style={{ color: '#2980b9', marginTop: 0 }}>📋 Patient Management</h2>
+                  <h2 style={{ color: '#2980b9', marginTop: 0 }}> Patient Management</h2>
                   <RecordList schema={patientSchema} apiUrl="http://localhost:5000/api/patients" />
                 </div>
 
                 <div style={{ marginTop: '30px', backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-                  <h2 style={{ color: '#27ae60', marginTop: 0 }}>💊 Pharmacy Inventory</h2>
+                  <h2 style={{ color: '#27ae60', marginTop: 0 }}> Pharmacy Inventory</h2>
                   <RecordList schema={medicineSchema} apiUrl="http://localhost:5000/api/medicines" />
                 </div>
 				{/* SECTION 3: LAB MANAGEMENT */}
 				<div style={{ marginTop: '30px', backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-				<h2 style={{ color: '#8e44ad', marginTop: 0 }}>🔬 Lab Management</h2>
+				<h2 style={{ color: '#8e44ad', marginTop: 0 }}> Lab Management</h2>
 				<RecordList 
 				schema={labSchema} 
 				apiUrl="http://localhost:5000/api/labtests"/>
