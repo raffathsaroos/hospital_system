@@ -12,8 +12,8 @@ app.use(express.json());
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/hospital_db';
 mongoose.connect(MONGO_URI)
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch(err => console.error("❌ DB Connection Error:", err));
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error("DB Connection Error:", err));
 
 // --- USER MODEL (For Auth) ---
 const UserSchema = new mongoose.Schema({
