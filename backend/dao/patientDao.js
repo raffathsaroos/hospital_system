@@ -32,6 +32,7 @@ class PatientDao {
         const [patients, total] = await Promise.all([
             Patient.find(query)
                 .populate('createdBy', 'name email role')
+                .populate('userAccount', 'name email role isActive')
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit)
@@ -45,12 +46,14 @@ class PatientDao {
     async getPatientByMongoId(id) {
         return Patient.findById(id)
             .populate('createdBy', 'name email role')
+            .populate('userAccount', 'name email role isActive')
             .exec();
     }
 
     async getPatientByPatientId(patientId) {
         return Patient.findOne({ patientId })
             .populate('createdBy', 'name email role')
+            .populate('userAccount', 'name email role isActive')
             .exec();
     }
 
@@ -60,6 +63,21 @@ class PatientDao {
             runValidators: true,
         })
             .populate('createdBy', 'name email role')
+            .populate('userAccount', 'name email role isActive')
+            .exec();
+    }
+
+    async getPatientByUserAccount(userId) {
+        return Patient.findOne({ userAccount: userId })
+            .populate('createdBy', 'name email role')
+            .populate('userAccount', 'name email role isActive')
+            .exec();
+    }
+
+    async getPatientByUserAccountId(userId) {
+        return Patient.findOne({ userAccount: userId })
+            .populate('createdBy', 'name email role')
+            .populate('userAccount', 'name email role isActive')
             .exec();
     }
 

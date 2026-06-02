@@ -172,6 +172,18 @@ const patientSchema = new mongoose.Schema(
 
         },
 
+        userAccount: {
+
+            type: mongoose.Schema.Types.ObjectId,
+
+            ref: 'User',
+
+            default: null,
+
+            index: true,
+
+        },
+
     },
 
     { timestamps: true }

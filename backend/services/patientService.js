@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import patientDao from '../dao/patientDao.js';
+import userDao from '../dao/userDao.js';
 
 
 
@@ -65,6 +66,16 @@ const sanitizePatient = (patient) => ({
     status: patient.status,
 
     createdBy: patient.createdBy,
+
+    userAccount: patient.userAccount
+        ? {
+              id: patient.userAccount._id.toString(),
+              name: patient.userAccount.name,
+              email: patient.userAccount.email,
+              role: patient.userAccount.role,
+              isActive: patient.userAccount.isActive,
+          }
+        : null,
 
     createdAt: patient.createdAt,
 
@@ -278,6 +289,22 @@ const getPatientById = async (id) => {
 
 
 
+const getMyPatientProfile = async (userId) => {
+
+    const patient = await patientDao.getPatientByUserAccountId(userId);
+
+    if (!patient) {
+
+        throw new Error('No patient profile is linked to this account');
+
+    }
+
+    return sanitizePatient(patient);
+
+};
+
+
+
 const updatePatient = async (id, updateData, userRole) => {
 
     await getPatientOrThrow(id);
@@ -320,6 +347,46 @@ const updatePatient = async (id, updateData, userRole) => {
 
 
 
+const linkPatientUser = async (id, userId) => {
+
+    const patient = await getPatientOrThrow(id);
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+
+        throw new Error('Invalid user id');
+
+    }
+
+    const user = await userDao.getUserById(userId);
+
+    if (!user) {
+
+        throw new Error('User not found');
+
+    }
+
+    if (user.role !== 'patient') {
+
+        throw new Error('User account must have patient role');
+
+    }
+
+    const linkedPatient = await patientDao.getPatientByUserAccount(userId);
+
+    if (linkedPatient && linkedPatient._id.toString() !== patient._id.toString()) {
+
+        throw new Error('Patient user account is already linked to another patient record');
+
+    }
+
+    const updatedPatient = await patientDao.updatePatient(patient._id, { userAccount: userId });
+
+    return sanitizePatient(updatedPatient);
+
+};
+
+
+
 const deletePatient = async (id) => {
 
     const patient = await getPatientOrThrow(id);
@@ -342,7 +409,11 @@ const patientService = {
 
     getPatientById,
 
+    getMyPatientProfile,
+
     updatePatient,
+
+    linkPatientUser,
 
     deletePatient,
 

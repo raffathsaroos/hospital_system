@@ -8,7 +8,11 @@ import {
 
     getPatientById,
 
+    getMyPatientProfile,
+
     getPatients,
+
+    linkPatientUser,
 
     updatePatient,
 
@@ -35,6 +39,18 @@ router
     .get(authorizeRoles('admin', 'doctor', 'nurse'), getPatients)
 
     .post(authorizeRoles('admin'), createPatient);
+
+
+
+router
+
+    .get('/me', authorizeRoles('patient'), getMyPatientProfile);
+
+
+
+router
+
+    .patch('/:id/link-user', authorizeRoles('admin'), linkPatientUser);
 
 
 

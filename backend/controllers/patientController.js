@@ -14,9 +14,11 @@ const sendError = (res, statusCode, message) => res.status(statusCode).json({
 
 const getErrorStatusCode = (error) => {
 
+    if (error.message === 'No patient profile is linked to this account') return 404;
+
     if (error.message.includes('not found')) return 404;
 
-    if (error.message.includes('Invalid') || error.message.includes('required') || error.message.includes('No allowed')) return 400;
+    if (error.message.includes('Invalid') || error.message.includes('required') || error.message.includes('No allowed') || error.message.includes('must have patient role') || error.message.includes('already linked')) return 400;
 
     return 500;
 
@@ -104,6 +106,32 @@ export const getPatientById = async (req, res) => {
 
 
 
+export const getMyPatientProfile = async (req, res) => {
+
+    try {
+
+        const patient = await patientService.getMyPatientProfile(req.user.id);
+
+
+
+        return res.status(200).json({
+
+            success: true,
+
+            patient,
+
+        });
+
+    } catch (error) {
+
+        return sendError(res, getErrorStatusCode(error), error.message);
+
+    }
+
+};
+
+
+
 export const updatePatient = async (req, res) => {
 
     try {
@@ -117,6 +145,34 @@ export const updatePatient = async (req, res) => {
             success: true,
 
             message: 'Patient updated successfully',
+
+            patient,
+
+        });
+
+    } catch (error) {
+
+        return sendError(res, getErrorStatusCode(error), error.message);
+
+    }
+
+};
+
+
+
+export const linkPatientUser = async (req, res) => {
+
+    try {
+
+        const patient = await patientService.linkPatientUser(req.params.id, req.body.userId);
+
+
+
+        return res.status(200).json({
+
+            success: true,
+
+            message: 'Patient user account linked successfully',
 
             patient,
 
